@@ -1,0 +1,15 @@
+#!/bin/bash
+
+files=$(echo -e "$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS" | sed "s/ /\\\ /g")
+
+IFS=$'\n' # set FOR split
+
+for path in $files; do
+  name=$(basename $path)
+
+  if [ -e $path ]; then
+    cd $(dirname $path)
+    find $name -type f -exec md5sum "{}" \; > "$name.md5"
+  fi
+  
+done
